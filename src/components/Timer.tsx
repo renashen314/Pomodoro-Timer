@@ -2,7 +2,23 @@ import { useEffect, useRef, useState } from "react"
 
 const INITIAL_TIME_IN_SECONDS = 5 * 60
 
+const TOTAL_SESSIONS = 4
+
+const SESSION_TYPE_LABEL = {
+    "focus": "focus time",
+    "short-break": "short break",
+    "long-break": "long break",
+  };
+
+const SESSION_DURATION_IN_MINUTES = {
+    "focus": 25,
+    "short-break": 5,
+    "long-break": 20
+}
+
 function Timer() {
+    const [currentSession, setCurrentSession] = useState<number>(1)
+    const [currentSessionType, setCurrentSessionType] = useState("")
     const [timeLeft, setTimeLeft] = useState<number>(INITIAL_TIME_IN_SECONDS)
     const [isRunning, setIsRunning] = useState<boolean>(false)
     const interval = useRef<number | null>(null)
@@ -50,7 +66,7 @@ function Timer() {
   return (
      <div className="flex flex-col items-center gap-4">
         <div>
-            <p>Session 1 of 4</p>
+            <p>Session {currentSession} of {TOTAL_SESSIONS} ({SESSION_TYPE_LABEL[currentSessionType]})</p>
         </div>
       <h1 className="text-4xl font-mono">{formatter(timeLeft)}</h1>
       <div className="flex gap-2">
