@@ -6,3 +6,4 @@
 
 ## working on
 - user can set customized duration
+- UI
