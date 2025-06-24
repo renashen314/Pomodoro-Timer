@@ -74,16 +74,18 @@ function Timer() {
         setTimeLeft(SESSION_DURATION_IN_MINUTES[SESSION_ORDER[0]] * 60);
     }
 
+    const isLastSessionEnded = currentSessionIndex === SESSION_ORDER.length - 1 && !isRunning && timeLeft === 0;
+
   return (
-     <div className="flex flex-col items-center gap-4">
-        <div>
+     <div className="timer-container">
+        <div className="session-count">
             <p>Session {currentSessionIndex + 1} of {SESSION_ORDER.length} ({SESSION_TYPE_LABEL[currentSessionType]})</p>
         </div>
-      <h1 className="text-4xl font-mono">{formatter(timeLeft)}</h1>
-      <div className="flex gap-2">
-        <button onClick={handleStart} className="px-4 py-2 bg-green-500 text-white rounded">{isRunning ? "Pause" : "Start"}</button>
-        <button onClick={handleSkip} className="px-4 py-2 bg-yellow-500 text-white rounded">Skip</button>
-        <button onClick={handleReset} className="px-4 py-2 bg-gray-500 text-white rounded">Reset</button>
+      <h1 className="timer-text">{isLastSessionEnded ? "Session ends" : formatter(timeLeft)}</h1>
+      <div className="buttons">
+        <button onClick={handleStart} className="" disabled={isLastSessionEnded}>{isRunning ? "Pause" : "Lock In"}</button>
+        <button onClick={handleSkip} className="button-skip-reset" disabled={isLastSessionEnded}>Skip</button>
+        <button onClick={handleReset} className="button-skip-reset">Reset</button>
       </div>
     </div>
   )
