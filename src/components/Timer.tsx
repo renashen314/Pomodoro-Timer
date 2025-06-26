@@ -8,31 +8,58 @@ const SESSION_TYPE_LABEL: Record<SessionType, string> = {
     "long-break": "long break",
   };
 
-const SESSION_DURATION_IN_MINUTES: Record<SessionType, number> = {
-    "focus": 25,
-    "short-break": 5,
-    "long-break": 20
-}
-
 const SESSION_ORDER: SessionType[] = ["focus", "short-break", "focus", "long-break"];
 
-function Timer() {
+interface TimerProps {
+  durations: Record<SessionType, number>;
+  soundEnabled: boolean;
+  volume: number;
+}
+
+function Timer({ durations, soundEnabled, volume }: TimerProps) {
     const [currentSessionIndex, setCurrentSessionIndex] = useState(0);
     const currentSessionType = SESSION_ORDER[currentSessionIndex];
-    const [timeLeft, setTimeLeft] = useState(() => SESSION_DURATION_IN_MINUTES[currentSessionType] * 60);
+    const [timeLeft, setTimeLeft] = useState(() => durations[currentSessionType] * 60);
     const [isRunning, setIsRunning] = useState<boolean>(false);
     const interval = useRef<number | null>(null);
+    
+    // const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    // // Create audio element for timer completion sound
+    // useEffect(() => {
+    //     if (soundEnabled && !audioRef.current) {
+    //         audioRef.current = new Audio();
+    //         // Using a simple beep sound - you can replace with any audio file
+    //         audioRef.current.src = "data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT";
+    //         audioRef.current.volume = volume;
+    //     }
+        
+    //     if (audioRef.current) {
+    //         audioRef.current.volume = volume;
+    //     }
+    // }, [soundEnabled, volume]);
+
+    // const playSound = useCallback(() => {
+    //     if (soundEnabled && audioRef.current) {
+    //         audioRef.current.play().catch(console.error);
+    //     }
+    // }, [soundEnabled]);
 
     const goToNextSession = useCallback(() => {
         if (currentSessionIndex < SESSION_ORDER.length - 1) {
             const nextIndex = currentSessionIndex + 1;
             setCurrentSessionIndex(nextIndex);
-            setTimeLeft(SESSION_DURATION_IN_MINUTES[SESSION_ORDER[nextIndex]] * 60);
+            setTimeLeft(durations[SESSION_ORDER[nextIndex]] * 60);
             setIsRunning(true); // or true if you want auto-start
         } else {
             setIsRunning(false); // End of all sessions
         }
-    }, [currentSessionIndex])
+    }, [currentSessionIndex, durations])
+
+    // Update timeLeft when durations change
+    useEffect(() => {
+        setTimeLeft(durations[currentSessionType] * 60);
+    }, [durations, currentSessionType]);
 
     const formatter = (seconds: number) => {
         const m = Math.floor(seconds/60)
@@ -47,6 +74,7 @@ function Timer() {
                     if (prev <= 1) {
                         clearInterval(interval.current!)
                         interval.current = null
+                        //playSound(); // Play sound when timer finishes
                         goToNextSession();
                         return 0
                     }
@@ -71,7 +99,7 @@ function Timer() {
     const handleReset = () =>{
         setIsRunning(false)
         setCurrentSessionIndex(0);
-        setTimeLeft(SESSION_DURATION_IN_MINUTES[SESSION_ORDER[0]] * 60);
+        setTimeLeft(durations[SESSION_ORDER[0]] * 60);
     }
 
     const isLastSessionEnded = currentSessionIndex === SESSION_ORDER.length - 1 && !isRunning && timeLeft === 0;
