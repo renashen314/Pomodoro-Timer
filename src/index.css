@@ -77,22 +77,22 @@ body {
 
 /* Button Styles */
 button {
-  border-radius: 8px;
+  border-radius: 36px;
   border: 1px solid transparent;
   padding: 1rem 1.5em;
   font-size: 1.5em;
   font-weight: 800;
   font-family: inherit;
-  background-color: #7d7d7d;
+  background-color: #5c5c60;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 .button-skip-reset {
   font-size: 2rem;
-  /* padding: 1rem; */
-  /* margin: 0 0.5rem; */
+  padding: 1rem;
+  margin: 0 2rem;
   background: none;
-  border: none;
+
   display: inline-block;
   line-height: 1;
 }
