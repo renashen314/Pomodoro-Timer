@@ -1,6 +1,6 @@
 const Header = () => {
   return (
-    <div className="header-bar">Pomodoro timer</div>
+    <div className="header-bar"></div>
   )
 }
 

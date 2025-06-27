@@ -1,3 +1,5 @@
+import { faArrowRotateLeft, faForward } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useRef, useState } from "react"
 
 type SessionType = "focus" | "short-break" | "long-break";
@@ -111,9 +113,9 @@ function Timer({ durations, soundEnabled, volume }: TimerProps) {
         </div>
       <h1 className="timer-text">{isLastSessionEnded ? "Session ends" : formatter(timeLeft)}</h1>
       <div className="buttons">
-        <button onClick={handleStart} className="" disabled={isLastSessionEnded}>{isRunning ? "Pause" : "Lock In"}</button>
-        <button onClick={handleSkip} className="button-skip-reset" disabled={isLastSessionEnded}>Skip</button>
-        <button onClick={handleReset} className="button-skip-reset">Reset</button>
+        <button onClick={handleReset} className="button-skip-reset"><span><FontAwesomeIcon icon={faArrowRotateLeft} /></span></button>
+        <button onClick={handleStart} disabled={isLastSessionEnded}>{isRunning ? "Pause" : "Lock In"}</button>
+        <button onClick={handleSkip} className="button-skip-reset" disabled={isLastSessionEnded}><span><FontAwesomeIcon icon={faForward} /></span></button>
       </div>
     </div>
   )

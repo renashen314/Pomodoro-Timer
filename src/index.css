@@ -6,7 +6,17 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #494949;
+  background: #606c88; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #3f4c6b,
+    #606c88
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #3f4c6b,
+    #606c88
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -32,19 +42,22 @@ body {
   min-height: 100vh;
 }
 
+/* Header Styles */
 .header-bar {
   display: flex;
   width: 100%;
   padding: 1rem;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
 }
 
+/* Timer Styles */
 .timer-container {
   display: flex;
   flex-direction: column;
   place-items: center;
-  background-color: rgba(40, 40, 40, 0.87);
+  background-color: rgba(40, 40, 40, 0.4);
+  width: 50%;
+  margin: 0 auto;
   padding: 1rem 4rem;
   border-radius: 2rem;
 }
@@ -60,25 +73,33 @@ body {
 
 .buttons {
   display: flex;
-  gap: 1rem;
 }
 
+/* Button Styles */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 1em 2em;
-  font-size: 1em;
-  font-weight: 500;
+  padding: 1rem 1.5em;
+  font-size: 1.5em;
+  font-weight: 800;
   font-family: inherit;
-  background-color: #606060;
+  background-color: #7d7d7d;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 .button-skip-reset {
-  background-color: #1a1a1a;
+  font-size: 2rem;
+  /* padding: 1rem; */
+  /* margin: 0 0.5rem; */
+  background: none;
+  border: none;
+  display: inline-block;
+  line-height: 1;
 }
+
 button:hover {
   border-color: #646cff;
+  background-color: #494949;
 }
 button:focus,
 button:focus-visible {
@@ -98,92 +119,55 @@ button:focus-visible {
   }
 }
 
-/* Tailwind utility equivalents for Timer component */
-.flex {
-  display: flex;
-}
-.flex-col {
-  flex-direction: column;
-}
-.items-center {
-  align-items: center;
-}
-.gap-4 {
-  gap: 1rem; /* Tailwind gap-4 = 1rem */
-}
-.text-5xl {
-  font-size: 3rem; /* Tailwind text-5xl = 3rem */
-  line-height: 1;
-}
-.font-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-}
-
 /* Settings Bar Styles */
 .settings-bar {
   position: fixed;
   left: 0;
   top: 0;
-  height: 100vh;
+  font-size: 1.5rem;
   z-index: 1000;
 }
-
-.settings-toggle {
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
+.settings-bar button {
   background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
-  transition: background-color 0.2s;
+  padding: 1rem;
 }
-
-.settings-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
 .settings-panel {
   position: absolute;
   left: 0;
   top: 0;
   width: 300px;
   height: 100vh;
-  background-color: rgba(40, 40, 40, 0.95);
+  background-color: rgba(40, 40, 40, 0.8);
   backdrop-filter: blur(10px);
   padding: 0;
   overflow-y: auto;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.settings-panel.open {
+  transform: translateX(0);
 }
 
 .settings-header {
   display: flex;
+  position: sticky;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
+  padding: 0 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  position: sticky;
-  top: 0;
   background-color: rgba(40, 40, 40, 0.95);
   z-index: 1;
-}
-
-.settings-header h3 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #ffffff;
 }
 
 .close-button {
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.7);
-  font-size: 1.2rem;
+  font-size: 2rem;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 1rem;
   border-radius: 4px;
   transition: all 0.2s;
 }
@@ -194,21 +178,15 @@ button:focus-visible {
 }
 
 .settings-panel h3 {
-  margin: 0 0 2rem 0;
   font-size: 1.5rem;
-  color: #ffffff;
-  text-align: center;
 }
 
 .settings-section {
-  margin-bottom: 2rem;
   padding: 0 1.5rem;
 }
 
 .settings-section h4 {
-  margin: 0 0 1rem 0;
   font-size: 1.1rem;
-  color: #ffffff;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   padding-bottom: 0.5rem;
 }
@@ -311,55 +289,4 @@ button:focus-visible {
   background: #646cff;
   cursor: pointer;
   border: none;
-}
-
-/* Light theme adjustments */
-@media (prefers-color-scheme: light) {
-  .settings-panel {
-    background-color: rgba(255, 255, 255, 0.95);
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .settings-header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    background-color: rgba(255, 255, 255, 0.95);
-  }
-  
-  .settings-header h3,
-  .settings-section h4 {
-    color: #213547;
-  }
-  
-  .close-button {
-    color: rgba(0, 0, 0, 0.7);
-  }
-  
-  .close-button:hover {
-    color: #213547;
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-  
-  .settings-section h4 {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  }
-  
-  .input-group label,
-  .sound-toggle label,
-  .volume-control label {
-    color: rgba(0, 0, 0, 0.8);
-  }
-  
-  .input-group small {
-    color: rgba(0, 0, 0, 0.6);
-  }
-  
-  .input-group input[type="number"] {
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    background-color: rgba(0, 0, 0, 0.05);
-    color: #213547;
-  }
-  
-  .volume-control input[type="range"] {
-    background: rgba(0, 0, 0, 0.2);
-  }
 }
