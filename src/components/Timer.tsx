@@ -25,27 +25,27 @@ function Timer({ durations, soundEnabled, volume }: TimerProps) {
     const [isRunning, setIsRunning] = useState<boolean>(false);
     const interval = useRef<number | null>(null);
     
-    // const audioRef = useRef<HTMLAudioElement | null>(null);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    // // Create audio element for timer completion sound
-    // useEffect(() => {
-    //     if (soundEnabled && !audioRef.current) {
-    //         audioRef.current = new Audio();
-    //         // Using a simple beep sound - you can replace with any audio file
-    //         audioRef.current.src = "data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT";
-    //         audioRef.current.volume = volume;
-    //     }
+    // Create audio element for timer completion sound
+    useEffect(() => {
+        if (soundEnabled && !audioRef.current) {
+            audioRef.current = new Audio();
+            // Using a simple beep sound - you can replace with any audio file
+            audioRef.current.src = "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav";
+            audioRef.current.volume = volume;
+        }
         
-    //     if (audioRef.current) {
-    //         audioRef.current.volume = volume;
-    //     }
-    // }, [soundEnabled, volume]);
+        if (audioRef.current) {
+            audioRef.current.volume = volume;
+        }
+    }, [soundEnabled, volume]);
 
-    // const playSound = useCallback(() => {
-    //     if (soundEnabled && audioRef.current) {
-    //         audioRef.current.play().catch(console.error);
-    //     }
-    // }, [soundEnabled]);
+    const playSound = useCallback(() => {
+        if (soundEnabled && audioRef.current) {
+            audioRef.current.play().catch(console.error);
+        }
+    }, [soundEnabled]);
 
     const goToNextSession = useCallback(() => {
         if (currentSessionIndex < SESSION_ORDER.length - 1) {
@@ -76,7 +76,7 @@ function Timer({ durations, soundEnabled, volume }: TimerProps) {
                     if (prev <= 1) {
                         clearInterval(interval.current!)
                         interval.current = null
-                        //playSound(); // Play sound when timer finishes
+                        playSound();
                         goToNextSession();
                         return 0
                     }
@@ -90,7 +90,7 @@ function Timer({ durations, soundEnabled, volume }: TimerProps) {
                 interval.current = null
             }
         }
-    }, [isRunning, currentSessionIndex, goToNextSession])
+    }, [isRunning, currentSessionIndex, goToNextSession, playSound])
 
     const handleStart = () =>{
         setIsRunning(!isRunning)

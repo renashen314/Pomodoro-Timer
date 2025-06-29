@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faGear, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faGear } from "@fortawesome/free-solid-svg-icons";
 
 interface SettingsBarProps {
   onDurationChange: (type: "focus" | "short-break" | "long-break", minutes: number) => void;
